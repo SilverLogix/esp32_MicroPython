@@ -18,7 +18,7 @@ tetrisDelay = [X2, X1, X1, X3, X1, X1, X3, X1, X1, X1, X1, X1, X1, X1, X1, X1, X
 for i in tetrisPlay:
     pwm0.freq(int(i))
     pwm0.duty(512)
-    time.sleep(tetrisDelay[ii])
+    time.sleep_ms(tetrisDelay[ii])
     ii = ii + 1
     time.sleep(0.2)
 else:

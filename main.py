@@ -102,13 +102,22 @@ def temp():  # Get and display temperature # SCREEN 1
 
 
 def fail():  # Test fail screen # SCREEN 4
-	oled_text("Test Error", "Failed to", "read something?", "", "", "01100101011101", "....|")
+	oled.fill(0)
+	oled.text("Rect", 38, 0)  # Set some text
+	oled.rect(10, 10, 40, 40, 1)
+	oled.show()
 
 
 def info():  # Get and display Info # SCREEN 2
+	if ap.active == True:
+		ip = str(ap.ifconfig()[0])
+	else:
+		ip = "Wifi Off"
+
 	mfreq = str(machine.freq())
-	ip = str(ap.ifconfig()[0])
+	# ip = str(ap.ifconfig()[0])
 	raw = str(esp32.raw_temperature())
+	print(ip)
 
 	oled_text("Info", ip, "CPU temp = " + raw + "F", "", mfreq, "", "..|..")
 	gc.collect()
@@ -175,4 +184,4 @@ while True:
 	if ScreenSelect == 5:
 		showlogo()
 
-	time.sleep(0.01)  # For stability
+	time.sleep_ms(1)  # For stability
