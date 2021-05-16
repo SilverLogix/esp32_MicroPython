@@ -25,7 +25,7 @@ def hotspot(ssid, maxc, on):
     ap.active(on)
 
 
-webrepl.start(password="password")
+#webrepl.start(password="password")
 hotspot("ESP-AP", 2, True)
 
 network.WLAN(0).active(False)
