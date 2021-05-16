@@ -1,8 +1,9 @@
 # MicroPython SSD1306 OLED driver, I2C and SPI interfaces created by Adafruit
+# Advanced functions by Silverlogix
 
 import time
-
 import framebuf
+from micropython import const
 
 # register definitions
 SET_CONTRAST =          const(0x81)
@@ -63,6 +64,7 @@ class SSD1306:
         self.fill(0)
         self.show()
 
+# Screen Commands ------------------------------------------------------------------ #
     def poweroff(self):
         self.write_cmd(SET_DISP | 0x00)
 
@@ -99,6 +101,23 @@ class SSD1306:
 
     def text(self, string, x, y, col=1):
         self.framebuf.text(string, x, y, col)
+
+    def rect(self, x, y, w, h, col):
+        self.framebuf.rect(x, y, w, h, col)
+
+    def fill_rect(self, x, y, w, h, col):
+        self.framebuf.fill_rect(self, x, y, w, h, col)
+
+    def hline(self, x, y, w, col):
+        self.framebuf.hline(x, y, w, col)
+
+    def vline(self, x, y, h, col):
+        self.framebuf.vline(self, x, y, h, col)
+
+    def line(self, x1, y1, x2, y2, col):
+        self.framebuf.line(self, x1, y1, x2, y2, col)
+
+# ---------------------------------------------------------------------------------------------------#
 
 
 class SSD1306_I2C(SSD1306):
