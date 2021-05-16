@@ -113,15 +113,10 @@ class SSD1306:
         self.framebuf.hline(x, y, w, col)
 
     def vline(self, x, y, h, col):
-        self.framebuf.vline(self, x, y, h, col)
+        self.framebuf.vline(x, y, h, col)
 
     def line(self, x1, y1, x2, y2, col):
-        self.framebuf.line(self, x1, y1, x2, y2, col)
-
-    def circle(self, center_x, center_y, radius, color):
-        self.framebuf.circle(center_x, center_y, radius, color)
-
-
+        self.framebuf.line(x1, y1, x2, y2, col)
 # ---------------------------------------------------------------------------------------------------#
 
 
