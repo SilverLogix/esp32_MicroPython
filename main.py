@@ -1,11 +1,12 @@
 from os import statvfs
-from machine import Pin, I2C, ADC
+import machine
+from machine import Pin, I2C, ADC, PWM
 import dht
 import time
 import ssd1306
 import esp32
 # Custom imports
-from boot import gc, ap, machine
+from boot import gc, ap
 from logo import showlogo
 
 # Init Screen --------------------------------------------------#
@@ -16,7 +17,7 @@ oled = ssd1306.SSD1306_I2C(oled_width, oled_height, i2c)
 
 oled.fill(1)
 oled.show()
-time.sleep_ms(200)
+time.sleep_ms(30)
 oled.fill(0)
 oled.text("Screen", 38, 0)  # Set some text
 oled.show()  # Show the text
@@ -40,7 +41,7 @@ def alarm_2(maxcount):
 f = int(0)
 ScreenSelect = int(0)
 
-a1max = 4
+a1max = 2
 alarm_1 = int(a1max)
 
 # Init advanced variables
@@ -80,6 +81,19 @@ def oled_text(otitle, oline1, oline2, oline3, oline4, oline5, onum):
     oled.show()
 
 
+def deep_sleep():
+    # pylint: disable=unexpected-arg
+    # put the device to sleep for 10 seconds
+    oled.contrast(0)
+    machine.deepsleep(10000)
+
+
+def sound():
+    pwm0 = PWM(Pin(15))
+    pwm0.freq(1567.98)
+    pwm0.duty(512)          # set duty cycle
+
+
 # Screens ---------------------------------------------------------------------------------------- #
 def temp():  # Get and display temperature # SCREEN 1
     try:
@@ -102,9 +116,12 @@ def temp():  # Get and display temperature # SCREEN 1
 def fail():  # Test fail screen # SCREEN 4
     oled.fill(0)
     oled.text("Draw", 0, 0)  # Set some text
-    oled.fill_rect(15, 15, 44, 44, 1)
+    #oled.fill_rect(15, 15, 44, 44, 1)
     # oled.rect(10, 10, 40, 40, 1)
     # oled.line(0,0,64,64,1)
+    # oled.triangle(10, 10, 55, 20, 5, 40, 1)
+    # oled.circle(64, 32, 10, 1)
+    oled.round_rect(20,20,30,30,3,1)
     oled.show()
 
 
@@ -135,7 +152,7 @@ def dfree():  # Display remaining free space # SCREEN 3
     mbfree = freesize / mbcalc  # 0.046875
     freestr = str(mbfree)
 
-    oled_text("Space (MB)", freestr, "", "", "", am, "...|.")
+    oled_text("Space(MB)", "curr: " + freestr, "", "Old:  " + "1.949219", "", am, "...|.")
     gc.collect()
 
 
@@ -157,17 +174,20 @@ def my_func(self):  # push button tests
     print(ScreenSelect)
     led.off()
 
+    # check if the device woke from a deep sleep
+    if machine.reset_cause() == machine.DEEPSLEEP_RESET:
+        print('woke from a deep sleep')
+
 
 # MAIN LOOP ---------------------------------------------------------------------------- #
 while True:
     btn.irq(my_func, Pin.IRQ_RISING)
-    # print(alarm_1)
 
     alarm_1 = alarm_1 - 1
     if alarm_1 <= 0:
         alarm_1 = a1max
 
-    if alarm_1 == 2:
+    if alarm_1 == 1:
         print("alarm_1")
 
     alarm_2(10)

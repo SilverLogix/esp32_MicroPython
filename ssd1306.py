@@ -1,5 +1,6 @@
-# MicroPython SSD1306 OLED driver, I2C and SPI interfaces created by Adafruit
+# MicroPython SSD1306 OLED driver, I2C and SPI interfaces
 # Advanced functions by Silverlogix
+# Modified to actually work right by SilverLogix
 
 import time
 
@@ -25,7 +26,15 @@ SET_PRECHARGE = const(0xd9)
 SET_VCOM_DESEL = const(0xdb)
 SET_CHARGE_PUMP = const(0x8d)
 
+__version__ = "0.2"
+__repo__ = "https://github.com/SilverLogix/esp32_MicroPython.git"
 
+
+# pylint: disable=invalid-name
+# pylint: disable=too-many-instance-attributes
+# pylint: disable=too-many-arguments
+# pylint: disable=unused-argument
+# pylint: disable=undefined-variable
 class SSD1306:
     def __init__(self, width, height, external_vcc):
         self.width = width
@@ -117,6 +126,91 @@ class SSD1306:
 
     def line(self, x1, y1, x2, y2, col):
         self.framebuf.line(x1, y1, x2, y2, col)
+
+    def triangle(self, x0, y0, x1, y1, x2, y2, col):
+        # Triangle drawing function.  Will draw a single pixel wide triangle
+        # around the points (x0, y0), (x1, y1), and (x2, y2).
+        self.framebuf.line(x0, y0, x1, y1, col)
+        self.framebuf.line(x1, y1, x2, y2, col)
+        self.framebuf.line(x2, y2, x0, y0, col)
+
+    def circle(self, x0, y0, radius, col):
+        # Circle drawing function.  Will draw a single pixel wide circle with
+        # center at x0, y0 and the specified radius.
+        f = 1 - radius
+        ddf_x = 1
+        ddf_y = -2 * radius
+        x = 0
+        y = radius
+        self.framebuf.pixel(x0, y0 + radius, col)
+        self.framebuf.pixel(x0, y0 - radius, col)
+        self.framebuf.pixel(x0 + radius, y0, col)
+        self.framebuf.pixel(x0 - radius, y0, col)
+        while x < y:
+            if f >= 0:
+                y -= 1
+                ddf_y += 2
+                f += ddf_y
+            x += 1
+            ddf_x += 2
+            f += ddf_x
+            self.framebuf.pixel(x0 + x, y0 + y, col)
+            self.framebuf.pixel(x0 - x, y0 + y, col)
+            self.framebuf.pixel(x0 + x, y0 - y, col)
+            self.framebuf.pixel(x0 - x, y0 - y, col)
+            self.framebuf.pixel(x0 + y, y0 + x, col)
+            self.framebuf.pixel(x0 - y, y0 + x, col)
+            self.framebuf.pixel(x0 + y, y0 - x, col)
+            self.framebuf.pixel(x0 - y, y0 - x, col)
+
+    def round_rect(self, x0, y0, width, height, radius, col):
+        """Rectangle with rounded corners drawing function.
+        This works like a regular rect though! if radius = 0
+        Will draw the outline of a rectangle with rounded corners with (x0,y0) at the top left"""
+        # shift to correct for start point location
+        x0 += radius
+        y0 += radius
+
+        # ensure that the radius will only ever half of the shortest side or less
+        radius = int(min(radius, width / 2, height / 2))
+
+        if radius:
+            f = 1 - radius
+            ddf_x = 1
+            ddf_y = -2 * radius
+            x = 0
+            y = radius
+            self.framebuf.vline(x0 - radius, y0, height - 2 * radius + 1, col)  # left
+            self.framebuf.vline(x0 + width - radius, y0, height - 2 * radius + 1, col)  # right
+            self.framebuf.hline(x0, y0 + height - radius + 1, width - 2 * radius + 1, col)  # bottom
+            self.framebuf.hline(x0, y0 - radius, width - 2 * radius + 1, col)  # top
+            while x < y:
+                if f >= 0:
+                    y -= 1
+                    ddf_y += 2
+                    f += ddf_y
+                x += 1
+                ddf_x += 2
+                f += ddf_x
+                # angle notations are based on the unit circle and in diection of being drawn
+
+                # top left
+                self.framebuf.pixel(x0 - y, y0 - x, col)  # 180 to 135
+                self.framebuf.pixel(x0 - x, y0 - y, col)  # 90 to 135
+
+                # top right
+                self.framebuf.pixel(x0 + x + width - 2 * radius, y0 - y, col)  # 90 to 45
+                self.framebuf.pixel(x0 + y + width - 2 * radius, y0 - x, col)  # 0 to 45
+
+                # bottom right
+                self.framebuf.pixel(x0 + y + width - 2 * radius, y0 + x + height - 2 * radius, col)  # 0 to 315
+                self.framebuf.pixel(x0 + x + width - 2 * radius, y0 + y + height - 2 * radius, col)  # 270 to 315
+
+                # bottom left
+                self.framebuf.pixel(x0 - x, y0 + y + height - 2 * radius, col)  # 270 to 255
+                self.framebuf.pixel(x0 - y, y0 + x + height - 2 * radius, col)  # 180 to 225
+
+
 # ---------------------------------------------------------------------------------------------------#
 
 

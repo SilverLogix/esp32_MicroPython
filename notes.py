@@ -1,5 +1,5 @@
 # Frequencies based on http://www.phy.mtu.edu/~suits/notefreqs.html
-R   = float(0)
+R   = float(0.0)
 C0  = float(16.35)
 CS0 = float(17.32)
 D0  = float(18.35)

@@ -18,6 +18,8 @@ SET_DISP_CLK_DIV=const(0xd5)
 SET_PRECHARGE=const(0xd9)
 SET_VCOM_DESEL=const(0xdb)
 SET_CHARGE_PUMP=const(0x8d)
+__version__="0.2"
+__repo__="https://github.com/SilverLogix/esp32_MicroPython.git"
 class SSD1306:
  def __init__(self,width,height,external_vcc):
   self.width=width
@@ -69,6 +71,66 @@ class SSD1306:
   self.framebuf.vline(x,y,h,col)
  def line(self,x1,y1,x2,y2,col):
   self.framebuf.line(x1,y1,x2,y2,col)
+ def triangle(self,x0,y0,x1,y1,x2,y2,col):
+  self.framebuf.line(x0,y0,x1,y1,col)
+  self.framebuf.line(x1,y1,x2,y2,col)
+  self.framebuf.line(x2,y2,x0,y0,col)
+ def circle(self,x0,y0,radius,col):
+  f=1-radius
+  ddf_x=1
+  ddf_y=-2*radius
+  x=0
+  y=radius
+  self.framebuf.pixel(x0,y0+radius,col)
+  self.framebuf.pixel(x0,y0-radius,col)
+  self.framebuf.pixel(x0+radius,y0,col)
+  self.framebuf.pixel(x0-radius,y0,col)
+  while x<y:
+   if f>=0:
+    y-=1
+    ddf_y+=2
+    f+=ddf_y
+   x+=1
+   ddf_x+=2
+   f+=ddf_x
+   self.framebuf.pixel(x0+x,y0+y,col)
+   self.framebuf.pixel(x0-x,y0+y,col)
+   self.framebuf.pixel(x0+x,y0-y,col)
+   self.framebuf.pixel(x0-x,y0-y,col)
+   self.framebuf.pixel(x0+y,y0+x,col)
+   self.framebuf.pixel(x0-y,y0+x,col)
+   self.framebuf.pixel(x0+y,y0-x,col)
+   self.framebuf.pixel(x0-y,y0-x,col)
+ def round_rect(self,x0,y0,width,height,radius,col):
+  x0+=radius
+  y0+=radius
+  radius=int(min(radius,width/2,height/2))
+  if radius:
+   f=1-radius
+   ddf_x=1
+   ddf_y=-2*radius
+   x=0
+   y=radius
+   self.framebuf.vline(x0-radius,y0,height-2*radius+1,col) 
+   self.framebuf.vline(x0+width-radius,y0,height-2*radius+1,col) 
+   self.framebuf.hline(x0,y0+height-radius+1,width-2*radius+1,col) 
+   self.framebuf.hline(x0,y0-radius,width-2*radius+1,col) 
+   while x<y:
+    if f>=0:
+     y-=1
+     ddf_y+=2
+     f+=ddf_y
+    x+=1
+    ddf_x+=2
+    f+=ddf_x
+    self.framebuf.pixel(x0-y,y0-x,col) 
+    self.framebuf.pixel(x0-x,y0-y,col) 
+    self.framebuf.pixel(x0+x+width-2*radius,y0-y,col) 
+    self.framebuf.pixel(x0+y+width-2*radius,y0-x,col) 
+    self.framebuf.pixel(x0+y+width-2*radius,y0+x+height-2*radius,col) 
+    self.framebuf.pixel(x0+x+width-2*radius,y0+y+height-2*radius,col) 
+    self.framebuf.pixel(x0-x,y0+y+height-2*radius,col) 
+    self.framebuf.pixel(x0-y,y0+x+height-2*radius,col) 
 class SSD1306_I2C(SSD1306):
  def __init__(self,width,height,i2c,addr=0x3c,external_vcc=False):
   self.i2c=i2c
