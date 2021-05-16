@@ -2,27 +2,28 @@
 # Advanced functions by Silverlogix
 
 import time
+
 import framebuf
 from micropython import const
 
 # register definitions
-SET_CONTRAST =          const(0x81)
-SET_ENTIRE_ON =         const(0xa4)
-SET_NORM_INV =          const(0xa6)
-SET_DISP =              const(0xae)
-SET_MEM_ADDR =          const(0x20)
-SET_COL_ADDR =          const(0x21)
-SET_PAGE_ADDR =         const(0x22)
-SET_DISP_START_LINE =   const(0x40)
-SET_SEG_REMAP =         const(0xa0)
-SET_MUX_RATIO =         const(0xa8)
-SET_COM_OUT_DIR =       const(0xc0)
-SET_DISP_OFFSET =       const(0xd3)
-SET_COM_PIN_CFG =       const(0xda)
-SET_DISP_CLK_DIV =      const(0xd5)
-SET_PRECHARGE =         const(0xd9)
-SET_VCOM_DESEL =        const(0xdb)
-SET_CHARGE_PUMP =       const(0x8d)
+SET_CONTRAST = const(0x81)
+SET_ENTIRE_ON = const(0xa4)
+SET_NORM_INV = const(0xa6)
+SET_DISP = const(0xae)
+SET_MEM_ADDR = const(0x20)
+SET_COL_ADDR = const(0x21)
+SET_PAGE_ADDR = const(0x22)
+SET_DISP_START_LINE = const(0x40)
+SET_SEG_REMAP = const(0xa0)
+SET_MUX_RATIO = const(0xa8)
+SET_COM_OUT_DIR = const(0xc0)
+SET_DISP_OFFSET = const(0xd3)
+SET_COM_PIN_CFG = const(0xda)
+SET_DISP_CLK_DIV = const(0xd5)
+SET_PRECHARGE = const(0xd9)
+SET_VCOM_DESEL = const(0xdb)
+SET_CHARGE_PUMP = const(0x8d)
 
 
 class SSD1306:
@@ -64,7 +65,7 @@ class SSD1306:
         self.fill(0)
         self.show()
 
-# Screen Commands ------------------------------------------------------------------ #
+    # Screen Commands ------------------------------------------------------------------ #
     def poweroff(self):
         self.write_cmd(SET_DISP | 0x00)
 
@@ -106,7 +107,7 @@ class SSD1306:
         self.framebuf.rect(x, y, w, h, col)
 
     def fill_rect(self, x, y, w, h, col):
-        self.framebuf.fill_rect(self, x, y, w, h, col)
+        self.framebuf.fill_rect(x, y, w, h, col)
 
     def hline(self, x, y, w, col):
         self.framebuf.hline(x, y, w, col)
@@ -116,6 +117,10 @@ class SSD1306:
 
     def line(self, x1, y1, x2, y2, col):
         self.framebuf.line(self, x1, y1, x2, y2, col)
+
+    def circle(self, center_x, center_y, radius, color):
+        self.framebuf.circle(center_x, center_y, radius, color)
+
 
 # ---------------------------------------------------------------------------------------------------#
 
