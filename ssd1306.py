@@ -26,7 +26,7 @@ SET_PRECHARGE = const(0xd9)
 SET_VCOM_DESEL = const(0xdb)
 SET_CHARGE_PUMP = const(0x8d)
 
-__version__ = "0.2"
+__version__ = "0.4"
 __repo__ = "https://github.com/SilverLogix/esp32_MicroPython.git"
 
 
