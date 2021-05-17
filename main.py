@@ -60,7 +60,6 @@ def blink():
 
 def get_dht11():  # get sensor info
     while True:
-        time.sleep(1)
 
         global stop_threads
         if stop_threads:
@@ -73,9 +72,10 @@ def get_dht11():  # get sensor info
             geth = d.humidity()
 
             # Convert celsius to fahrenheit
-            ctf = (gett * 9 / 5) + 32  # -4 was calibration for my sensor
+            ctf = (gett * 9 / 5) + 32 - 4 # -4 was calibration for my sensor
             TT = ctf
             HH = geth
+            time.sleep_ms(1000)
             return HH, TT
 
         except OSError as e:
@@ -84,7 +84,6 @@ def get_dht11():  # get sensor info
             oled.show()
             # thread.exit()
             return "Failed to read sensor."
-
 
 # ========== Screens ========= #
 
@@ -100,7 +99,10 @@ def scralarm():
 
 # screen 1 ---------
 def display_dht11():
-    TT, HH = get_dht11()
+    HH, TT = get_dht11()
+    print("temp: " + str(TT))
+    print("Humi: " + str(HH))
+    print("")
     oled.fill(0)
     oled.menu_pix(1)
     oled.text_long("Sensor", "Temp = {0:0.1f}F".format(TT), "Humidity = {0:0.0f}%".format(HH), "", "", "")
@@ -190,14 +192,17 @@ def my_func(self):  # push button tests
 
 # ------------------------------------ #
 
+# ttt = thread.start_new_thread(test, ())
+# bbb = thread.start_new_thread(blink, ())
+thread.start_new_thread(get_dht11, ())
+
 # Boot up flash!
 oled.fill(1)
 oled.show()
-time.sleep_ms(200)
+time.sleep_ms(1000)
 
-# ttt = thread.start_new_thread(test, ())
-# bbb = thread.start_new_thread(blink, ())
-qqq = thread.start_new_thread(get_dht11, ())
+
+
 
 
 # ------------ Main Loop ------------- #
