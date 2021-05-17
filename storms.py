@@ -15,3 +15,10 @@ for i in songOfStromArray:
     ii = ii + 1
 else:
     pwm0.deinit()
+
+'''
+song = {
+    'note': [1, 2, 3], 
+    'dura': [2, 4, 3]
+        }
+'''

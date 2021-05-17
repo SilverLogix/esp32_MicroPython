@@ -61,6 +61,35 @@ class SSD1306:
   self.framebuf.scroll(dx,dy)
  def text(self,string,x,y,col=1):
   self.framebuf.text(string,x,y,col)
+ def text_long(self,otitle,oline1,oline2,oline3,oline4,oline5):
+  self.framebuf.text(otitle,0,0)
+  self.framebuf.text(oline1,0,16)
+  self.framebuf.text(oline2,0,26)
+  self.framebuf.text(oline3,0,36)
+  self.framebuf.text(oline4,0,46)
+  self.framebuf.text(oline5,0,56)
+ def menu_pix(self,loc):
+  opix=[125,120,115,110,105,100]
+  for x in opix:
+   self.framebuf.pixel(x,4,1)
+  if loc==0:
+   ll=100
+  if loc==1:
+   ll=105
+  if loc==2:
+   ll=110
+  if loc==3:
+   ll=115
+  if loc==4:
+   ll=120
+  if loc==5:
+   ll=125
+  if loc==6:
+   ll=130
+  self.framebuf.pixel(ll-1,4,1)
+  self.framebuf.pixel(ll+1,4,1)
+  self.framebuf.pixel(ll,4-1,1)
+  self.framebuf.pixel(ll,4+1,1)
  def rect(self,x,y,w,h,col):
   self.framebuf.rect(x,y,w,h,col)
  def fill_rect(self,x,y,w,h,col):
