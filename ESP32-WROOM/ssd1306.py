@@ -1,4 +1,4 @@
-# MicroPython SSD1306 OLED driver, I2C and SPI interfaces
+# MicroPython ESP32-WROOM OLED driver, I2C and SPI interfaces
 # Advanced functions by Silverlogix
 # Modified to actually work right by SilverLogix
 

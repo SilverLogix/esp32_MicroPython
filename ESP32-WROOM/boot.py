@@ -8,7 +8,7 @@ import gc
 
 import machine
 import network
-import webrepl
+#import webrepl
 
 
 # DO NOT GO BELOW 80Mhz!!!  Will break wifi and complicate serial!
@@ -26,7 +26,7 @@ def hotspot(ssid, maxc, on):
     ap.active(on)
 
 
-webrepl.start(password="password")
+#webrepl.start(password="password")
 hotspot("ESP-AP", 2, True)
 
 # network.WLAN(0).active(False)
