@@ -19,9 +19,10 @@ def m_freq():
 
     gfr = str(machine.freq())
 
-    print(gfr)
+    # print(gfr)
 
-    return gfr
+    fff = gfr
+    return fff
 
 
 def raw_temp():
@@ -29,9 +30,10 @@ def raw_temp():
 
     raw = str(esp32.raw_temperature())
     rtemp = ("CPU Temp: " + raw + "F")
-    print(rtemp)
+    # print(rtemp)
     rrr = rtemp
     return rrr
+
 
 
 def showVoltage():
@@ -45,7 +47,7 @@ def showVoltage():
     battery_voltage = (float(v) / 4095.0) * 2.0 * 3.3 * (vref / 1000.0)
     # voltage = ("Voltage :" + str(battery_voltage) + "V")
     voltage = ("Voltage: {0:0.2f}v".format(battery_voltage))
-    print(voltage)
+    # print(voltage)
 
     ddd = voltage
     return ddd
