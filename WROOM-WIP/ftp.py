@@ -5,10 +5,10 @@ import machine
 import network
 import uos
 
-from board import AP
+# from board import AP
 
-machine.freq(160000000)
-AP("esp32", 2, True)
+# machine.freq(160000000)
+# AP("esp32", 2, True)
 
 
 def send_list_data(path, dataclient, full):
@@ -288,6 +288,3 @@ def ftpserver(port=21):
         ftpsocket.close()
         if dataclient is not None:
             dataclient.close()
-
-
-ftpserver()

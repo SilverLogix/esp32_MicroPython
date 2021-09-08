@@ -1,13 +1,12 @@
 # ----------- #
 
 import os
-import socket
 import board as bd
 import gfx
-import font
-import gc
 import webrepl
-import uftpd
+from ftp import *
+import uasyncio
+
 
 gc.enable()
 gc.collect()
@@ -17,9 +16,18 @@ webrepl.start(password="password")
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.bind(('', 80))
 s.listen(5)
-uftpd.start
+# uftpd.start
 
-def init_update():
+gfx.gwifi(gfx.YELLOW)
+ifinfo = bd.STA("NETGEAR90", "curlyearth685")
+gfx.g_update(gfx.YELLOW)
+pip = str(ifinfo.ifconfig()[0])
+gfx.text(pip, 1, 1, gfx.BLACK, gfx.YELLOW)
+
+something = 0
+ftpserver()
+
+async def init_update():
 
     HTML = """
 
@@ -30,13 +38,6 @@ def init_update():
 
     """
 
-    gfx.gwifi(gfx.YELLOW)
-    ifinfo = bd.STA("NETGEAR90", "curlyearth685")
-    gfx.g_update(gfx.YELLOW)
-    pip = str(ifinfo.ifconfig()[0])
-    gfx.text(pip, 1, 1, gfx.BLACK, gfx.YELLOW)
-
-    something = 0
     while True:
         conn, addr = s.accept()
         print('Got a connection from %s' % str(addr))
@@ -65,3 +66,13 @@ def init_update():
         conn.send('Connection: close\n\n')
         conn.sendall(response)
         conn.close()
+
+        await uasyncio.sleep_ms(500)
+
+
+loop = uasyncio.get_event_loop()
+
+loop.create_task(init_update())
+loop.create_task(init_update())
+
+loop.run_forever()

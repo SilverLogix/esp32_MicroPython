@@ -137,13 +137,13 @@ def draw_shapes():  # Test draw screen
 def showlogo():
     gfx.text_long("Colors", "", "", "", "", "", "", "")
 
-    gfx.text("    ",    0, 18,  gfx.BLACK,   gfx.BLACK)
-    gfx.text("Red",     0, 34,  gfx.RED,     gfx.BLACK)
-    gfx.text("Blue",    0, 50,  gfx.BLUE,    gfx.BLACK)
-    gfx.text("White",   0, 66,  gfx.WHITE,   gfx.BLACK)
-    gfx.text("Green",   0, 82,  gfx.GREEN,   gfx.BLACK)
-    gfx.text("Magenta", 0, 98,  gfx.MAGENTA, gfx.BLACK)
-    gfx.text("Cyan",    0, 114, gfx.CYAN,    gfx.BLACK)
+    gfx.text("    ", 0, 18, gfx.BLACK, gfx.BLACK)
+    gfx.text("Red", 0, 34, gfx.RED, gfx.BLACK)
+    gfx.text("Blue", 0, 50, gfx.BLUE, gfx.BLACK)
+    gfx.text("White", 0, 66, gfx.WHITE, gfx.BLACK)
+    gfx.text("Green", 0, 82, gfx.GREEN, gfx.BLACK)
+    gfx.text("Magenta", 0, 98, gfx.MAGENTA, gfx.BLACK)
+    gfx.text("Cyan", 0, 114, gfx.CYAN, gfx.BLACK)
 
 
 # =========================== #

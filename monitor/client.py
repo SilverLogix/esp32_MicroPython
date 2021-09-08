@@ -4,8 +4,8 @@ import time
 import PySimpleGUI as Sg
 import serial
 
-choices = ('COM1', 'COM2', 'COM3', 'COM4')
-combo = "COM1"
+choices = ('/dev/ttyUSB0', 'COM2', 'COM3', 'COM4')
+combo = "/dev/ttyUSB0"
 enter = "help()"
 isconnected = False
 ser = serial.Serial(str(combo), 115200)

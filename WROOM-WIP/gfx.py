@@ -58,14 +58,14 @@ def triangle(x0, y0, x1, y1, x2, y2, col):
 def wipe(col):
     import font
     tft.fill(col)
-    tft.text(font, "                  ", 0, 0,   col, col)
+    tft.text(font, "                  ", 0, 0, col, col)
 
-    tft.text(font, "                  ", 0, 18,  col, col)
-    tft.text(font, "                  ", 0, 34,  col, col)
-    tft.text(font, "                  ", 0, 50,  col, col)
-    tft.text(font, "                  ", 0, 66,  col, col)
-    tft.text(font, "                  ", 0, 82,  col, col)
-    tft.text(font, "                  ", 0, 98,  col, col)
+    tft.text(font, "                  ", 0, 18, col, col)
+    tft.text(font, "                  ", 0, 34, col, col)
+    tft.text(font, "                  ", 0, 50, col, col)
+    tft.text(font, "                  ", 0, 66, col, col)
+    tft.text(font, "                  ", 0, 82, col, col)
+    tft.text(font, "                  ", 0, 98, col, col)
     tft.text(font, "                  ", 0, 114, col, col)
 
 
